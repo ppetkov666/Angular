@@ -1,0 +1,21 @@
+<app-menu></app-menu>
+
+<div class="container">
+    <router-outlet></router-outlet>    
+</div>
+
+<!-- Example ONE
+<div>
+    <input type="text" (input)="title = $any($event.target).value">
+</div>
+
+<div>
+    <input type="checkbox" checked (change)="display = !display">Display 
+</div>
+<app-lifecycle-test *ngIf="display" [title]="title"></app-lifecycle-test>       
+-->
+
+<!-- Example TWO
+<app-rating (onRating)="handleRating($event)"></app-rating> 
+-->
+

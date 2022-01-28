@@ -1,0 +1,36 @@
+<app-generic-list [list]="movies">
+    <ng-container content>
+        <div class="movies-container">
+            <div *ngFor="let movie of movies; let index = index" class="movie-container">
+
+                <a href="">
+                    <img src={{movie.poster}} alt="Poster" width="200" height="300"/>
+                </a>
+                <p>
+                    <a href="">{{movie.title}}</a>
+                </p>
+                <div>
+                    <a href="" mat-flat-button color="primary">Edit</a>
+                    <button mat-flat-button color="warn" type="button" (click)="remove(index)">Delete</button>
+                </div>
+                <!-- <div>
+                    <h2>
+                        {{(index)}} <a>index</a> {{movie.title | uppercase}}
+                    </h2>
+                    <button style="margin-left: 1rem;" (click)="remove(index)">Remove</button>
+                </div>
+                <div>{{movie.date | date: "dd/MMMM/yyyy" |lowercase}}</div>
+                <div>{{movie.price | currency}}</div> -->
+
+            </div>
+        </div>
+    </ng-container>
+    <!-- <ng-container loading>
+        <img src="https://cdn.dribbble.com/users/1186261/screenshots/3718681/_______.gif" alt="">
+    </ng-container> -->
+
+    <!-- <ng-container empthy>
+        custom Message no records
+    </ng-container> -->
+
+</app-generic-list>
