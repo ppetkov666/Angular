@@ -5,3 +5,11 @@ mat-toolbar{
     z-index: 1000;
 
 }
+
+app-authorize-view {
+    display: flex;
+}
+
+.space {
+    flex: 1 1 auto;
+}

@@ -35,7 +35,7 @@ export class FormActorComponent implements OnInit {
       this.form.patchValue(this.model);
     }
   }
-  saveChanges() {
+  saveChanges() {    
     this.onSaveChanges.emit(this.form.value);
   }
 

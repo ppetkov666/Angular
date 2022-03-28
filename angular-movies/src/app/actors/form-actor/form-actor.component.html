@@ -21,8 +21,8 @@
     <!-- row 23 is modified !!! -->
     <app-input-markdown 
     [markDownContent]="model?.biography === null ? '': model!.biography" 
+    [label]="'Biography'"
     (changeMarkDown)="changeMarkDown($event)">
-
     </app-input-markdown>
 
     <div>

@@ -28,6 +28,7 @@
 
     <h4>Summary</h4>
     <app-input-markdown [markDownContent]="model?.summary === null ? '': model!.summary"
+    [label]="'Summary'"
         (changeMarkDown)="changeMarkDown($event)">
     </app-input-markdown>
 
@@ -40,7 +41,7 @@
     </app-multiple-selector>
 
     <h4>Select the Actors</h4>
-    <app-actors-autocomplete></app-actors-autocomplete>
+    <app-actors-autocomplete [selectedActors]="selectedActors"></app-actors-autocomplete>
 
     <div>
         <button mat-flat-button color="primary" [disabled]="form.invalid">Save changes</button>

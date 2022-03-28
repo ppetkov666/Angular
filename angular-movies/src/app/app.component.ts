@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent {
 
-// left here because of previous example tests
+  // left here because of previous example tests
   title = "just sample value";
   display = true;
 

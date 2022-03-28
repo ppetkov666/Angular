@@ -1,8 +1,10 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatTable } from '@angular/material/table';
+import { actorsMovieDTO } from '../actors.model';
+import { ActorsService } from '../actors.service';
 
 @Component({
   selector: 'app-actors-autocomplete',
@@ -11,17 +13,14 @@ import { MatTable } from '@angular/material/table';
 })
 export class ActorsAutocompleteComponent implements OnInit {
 
-  constructor() { }
+  constructor(private actorsService: ActorsService) { }
 
   control: FormControl = new FormControl();
-  actors = [
-    { name: 'Brad Pitt', picture: "/assets/bradPitt.jpg" },
-    { name: 'Silvester Stalone', picture: "/assets/stalone.jpg" },
-    { name: 'johny Depp', picture: "/assets/depp.jpg" },
-  ]
 
-  selectedActors: any = [];
-  originalActors = this.actors;
+  @Input()
+  selectedActors: actorsMovieDTO[] = [];
+
+  actorsToDisplay: actorsMovieDTO[] = [];
 
   columnsToDisplay = ['picture', 'name', 'character', 'actions'];
 
@@ -29,15 +28,25 @@ export class ActorsAutocompleteComponent implements OnInit {
 
   ngOnInit(): void {
     this.control.valueChanges.subscribe(value => {
-      this.actors = this.originalActors;
-      this.actors = this.actors.filter(actor => actor.name.indexOf(value) !== -1);
+      var isString = typeof value === 'string';
+      if (isString && value != '') {
+        this.actorsService.searchByName(value).subscribe(actors => {
+          this.actorsToDisplay = actors
+        });
+      }
     });
   }
 
   optionSelected(data: MatAutocompleteSelectedEvent) {
     console.log(data.option.value)
-    this.selectedActors.push(data.option.value);
+
     this.control.patchValue('');
+
+    if (this.selectedActors.findIndex(x => x.id == data.option.value.id) !== -1) {
+      return;
+    }
+
+    this.selectedActors.push(data.option.value);
     if (this.table !== undefined) {
       this.table.renderRows();
     }

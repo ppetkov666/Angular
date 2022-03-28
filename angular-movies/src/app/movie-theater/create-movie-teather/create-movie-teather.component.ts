@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MovieTheatersService } from 'src/app/movie-theaters/movie-theaters.service';
 import { movieTheatersCreationDTO } from '../movie-theater.model';
 
 @Component({
@@ -8,13 +10,15 @@ import { movieTheatersCreationDTO } from '../movie-theater.model';
 })
 export class CreateMovieTheaterComponent implements OnInit {
 
-  constructor() { }
+  constructor(private MovieTheatersService: MovieTheatersService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
   saveChanges(data: movieTheatersCreationDTO) {
-    console.log(data)
+    this.MovieTheatersService.create(data).subscribe(() => {           
+        this.router.navigate(['/movietheater'])
+    })
 
   }
 }

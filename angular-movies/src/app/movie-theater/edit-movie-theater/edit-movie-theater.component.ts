@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MovieTheatersService } from 'src/app/movie-theaters/movie-theaters.service';
 import { movieTheatersCreationDTO, movieTheatersDTO } from '../movie-theater.model';
 
 @Component({
@@ -9,19 +10,29 @@ import { movieTheatersCreationDTO, movieTheatersDTO } from '../movie-theater.mod
 })
 export class EditMovieTheaterComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute) { }
+  constructor(
+    private movieTheatersService: MovieTheatersService, 
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    ) { }
 
 
-  model: movieTheatersDTO = { name: 'New test movie', latitude: 42.42600545323401, longitude: 385.631421090875 };
+  model!: movieTheatersDTO;
 
   ngOnInit(): void {
+  
     this.activatedRoute.params.subscribe((params) => {
+      this.movieTheatersService.getById(params['id']).subscribe((data)=>{
+        this.model = data;
+      })
       //alert(params["id"])
     })
   }
 
   saveChanges(data: movieTheatersCreationDTO) {
-    console.log(data)
+    this.movieTheatersService.edit(this.model.id, data).subscribe(()=>{
+      return this.router.navigate(['/movietheater']);
+    });
   }
 
 }

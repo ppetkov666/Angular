@@ -21,7 +21,7 @@
                         text: 'Are you sure?',
                         showCancelButton: true
                     }"
-                        (confirm)="delete()">
+                        (confirm)="delete(element.id)">
                         Delete
                     </button>
                 </td>
@@ -31,9 +31,11 @@
         </table>
 
         <mat-paginator [pageSizeOptions]="[5,10,20,50]" showFirstLastButtons
-        [length]="totalAmountOfRecords" pageSize="pageSize"
+        [length]="totalAmountOfRecords" pageSize="{{pageSize}}"
+        (page)="udpatePagination($event)"
+        class="mat-elevation-z8"
         >
-
+ 
         </mat-paginator>
 
     </ng-container>

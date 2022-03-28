@@ -3,15 +3,25 @@
         <div class="movies-container">
             <div *ngFor="let movie of movies; let index = index" class="movie-container">
 
-                <a href="">
-                    <img src={{movie.poster}} alt="Poster" width="200" height="300"/>
+                <a [routerLink]="'movie/' + movie.id">
+                    <img src={{movie.poster}} alt="Poster" width="200" height="300" />
                 </a>
                 <p>
-                    <a href="">{{movie.title}}</a>
+                    <a [routerLink]="'movie/' + movie.id">{{movie.title}}</a>
                 </p>
                 <div>
-                    <a href="" mat-flat-button color="primary">Edit</a>
-                    <button mat-flat-button color="warn" type="button" (click)="remove(index)">Delete</button>
+                    <app-authorize-view [role]="'admin'">
+                        <ng-container authorized>
+                            <a [routerLink]="'movies/edit/' + movie.id" mat-flat-button color="primary">Edit</a>
+                            <button mat-flat-button color="warn" type="button"
+                                [swal]="{title: 'Confirmation', text: 'Are you sure', showCancelButton: true}"
+                                (confirm)="remove(movie.id)">
+                                Delete
+                            </button>
+                        </ng-container>
+                    </app-authorize-view>
+
+
                 </div>
                 <!-- <div>
                     <h2>

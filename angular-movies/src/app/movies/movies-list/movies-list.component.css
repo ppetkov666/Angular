@@ -27,6 +27,11 @@ button{
     margin-left: 1em;
 }
 
+a {
+    text-decoration: none;
+    color: black;
+}
+
 /* done for test purposes 
 h2{
     color: blueviolet;

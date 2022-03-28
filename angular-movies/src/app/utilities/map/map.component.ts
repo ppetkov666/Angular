@@ -1,7 +1,19 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { tileLayer, latLng, LeafletMouseEvent, Marker, marker, } from 'leaflet';
-import { coordinatesMap } from './coordinates';
+import { tileLayer, latLng, LeafletMouseEvent, Marker, marker, LatLng, } from 'leaflet';
+import { coordinatesMap, coordinatesMapWithMessage } from './coordinates';
 declare let L: { icon: (arg0: { iconSize: number[]; iconAnchor: number[]; iconUrl: string; shadowUrl: string; }) => any; };
+declare let M: { icon: 
+  (arg0: { 
+    iconRetinaUrl: string;
+    iconUrl: string;
+    shadowUrl: string;
+    iconSize: number[]; 
+    iconAnchor: number[];     
+    popupAnchor: number[];
+    tooltipAnchor: number[];
+    shadowSize: number[];
+  }) => any; };
+
 
 @Component({
   selector: 'app-map',
@@ -13,11 +25,32 @@ export class MapComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.layers = this.initialCoordinates.map((value) => marker([value.latitude, value.longitude], this.icon));
+    this.layers = this.initialCoordinates.map((value) => {
+      let latitude: string = '';
+      let longitude: string = '';
+      latitude = value.latitude.toString();
+      longitude = value.longitude.toString();
+      if(latitude.indexOf(',') > -1) latitude = latitude.replace(',','.')
+      if(longitude.indexOf(',') > -1) longitude = longitude.replace(',','.')
+            
+      
+      const m = marker([parseFloat(latitude), parseFloat(longitude)], this.icon)
+      if (value.message) {
+        m.bindPopup(value.message, { autoClose: false, autoPan: false });
+      }
+      return m
+    }
+    );
+
+    var test = this.layers;
+
   }
 
   @Input()
-  initialCoordinates: coordinatesMap[] = [];
+  initialCoordinates: coordinatesMapWithMessage[] = [];
+
+  @Input()
+  editMode: boolean = true;
 
   @Output()
   onSelectedLocation = new EventEmitter<coordinatesMap>();
@@ -46,11 +79,15 @@ export class MapComponent implements OnInit {
   layers: Marker<any>[] = [];
 
   handleMapClick(event: LeafletMouseEvent) {
-    const latitude = event.latlng.lat;
-    const longitude = event.latlng.lng;
-    console.log({ latitude, longitude });
-    this.layers.push(marker([latitude, longitude], this.icon));
-    this.onSelectedLocation.emit({ latitude, longitude })
+    if (this.editMode) {
+      const latitude = event.latlng.lat;
+      const longitude = event.latlng.lng;
+      console.log({ latitude, longitude });
+      this.layers = [];      
+      this.layers.push(marker([latitude, longitude], this.icon));
+      this.onSelectedLocation.emit({ latitude, longitude })
+    }
+
 
   }
 

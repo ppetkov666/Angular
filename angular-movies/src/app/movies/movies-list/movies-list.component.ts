@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MoviesService } from 'src/app/movie/movies.service';
+
 
 @Component({
   selector: 'app-movies-list',
@@ -7,34 +9,19 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class MoviesListComponent implements OnInit {
 
-  constructor() { }
+  constructor(private moviesService: MoviesService) { }
 
-  ngOnInit(): void {
-
-    // setTimeout(() => {
-    //   this.movies = [{
-    //     title: 'Spiderman',
-    //     date: new Date('2015-11-11'),
-    //     price: 12.99
-    //   }, {
-    //     title: 'Batman',
-    //     date: new Date('2016-11-11'),
-    //     price: 13.99
-    //   }, {
-    //     title: 'joker',
-    //     date: new Date('2017-11-11'),
-    //     price: 14.99
-    //   },]
-    // }, 2000);
-
-
+  ngOnInit(): void {    
   }
-  title = 'angular-movies';
+  //title = 'angular-movies';
   @Input()
   movies: any[] | undefined;
+   @Output()
+   onDelete = new EventEmitter<void>();
 
-
-  remove(index: number) {
-    this.movies?.splice(index, 1);
+  remove(id: number) {    
+    this.moviesService.delete(id).subscribe(()=> {
+        this.onDelete.emit();
+    });
   }
 }
